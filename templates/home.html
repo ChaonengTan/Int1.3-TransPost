@@ -1,4 +1,35 @@
 {%extends 'base.html'%}
+{% block styles %}
+
+{% endblock %}
 {%block content%}
-hello world
+<h1>Trans - <u>Posts</u></h1>
+<div class="newPost">
+    <form action="/newPost" method="POST">
+        <fieldset>
+            <h3>New Post</h3>
+            <label>
+                Title
+                <input type="text" name="newPostTitle" placeholder="Title">
+            </label>
+            <label>
+                IMG URL
+                <input type="text" name="newPostURL" placeholder="https://via.placeholder.com/100">
+            </label>
+            <label>
+                Discription
+                <input type="text" name="newPostDisc" placeholder="discription...">
+            </label>
+
+            <input type="submit" class="submit" value="Post!">
+        </fieldset>
+    </form>
+</div>
+{% for post in mongoPosts %}
+    <div class="postCard">
+        <h3>{{post.title}}</h3>
+        <img src="{{post.image}}" alt="">
+        <p>{{post.disc}}</p>
+    </div>
+{% endfor %}
 {%endblock%}
