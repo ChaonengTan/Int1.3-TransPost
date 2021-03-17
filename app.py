@@ -38,7 +38,42 @@ def newPost():
         'mongoPosts' : mongoPosts
     }
     return render_template('home.html', **context)
+@app.route('/posts/<postID>')
+def postDetails(postID):
+    """Display post along with the details."""
+    postInfo = mongo.db.posts.find_one(ObjectId(postID))
+    context = {
+        'post' : postInfo
+    }
+    return render_template('postDetails.html', **context)
+@app.route('/posts/translate/<postID>', methods=['GET', 'POST'])
+def postTranslate(postID):
+    """Translates a post"""
+    postInfo = mongo.db.posts.find_one(ObjectId(postID))
+    source = request.form.get('translateSource')
+    target = request.form.get('translateTarget')
 
+    url = "https://google-translate1.p.rapidapi.com/language/translate/v2"
+    headers = {
+        'content-type': "application/x-www-form-urlencoded",
+        'accept-encoding': "application/gzip",
+        'x-rapidapi-key': "42f7c0c10cmshc0be89f4d5b8fbfp17aa59jsnb70a5af1ca16",
+        'x-rapidapi-host': "google-translate1.p.rapidapi.com"
+        }
+    Payload = f"q={postInfo['title']}&q={postInfo['disc']}&source={source}&target={target}"
+
+    titleResponse = requests.request("POST", url, data=Payload, headers=headers)
+    print(f'new Test request: {titleResponse.text}')
+    dataResponse = json.loads(titleResponse.text)
+    translatedPostInfo = {
+        'title': dataResponse['data']['translations'][0]['translatedText'],
+        'image': postInfo['image'],
+        'disc': dataResponse['data']['translations'][1]['translatedText']
+    }
+    context = {
+        'post' : translatedPostInfo
+    }
+    return render_template('postDetails.html', **context)
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
     app.run(debug=True)

@@ -25,11 +25,15 @@
         </fieldset>
     </form>
 </div>
+
 {% for post in mongoPosts %}
-    <div class="postCard">
-        <h3>{{post.title}}</h3>
-        <img src="{{post.image}}" alt="">
-        <p>{{post.disc}}</p>
-    </div>
+    <a href="/posts/{{post._id}}">
+        <div class="postCard">
+            <h3>{{post.title}}</h3>
+            <img src="{{post.image}}" alt="">
+            <p>{{post.disc}}</p>
+            <p>{{post._id}}</p>
+        </div>
+    </a>
 {% endfor %}
 {%endblock%}

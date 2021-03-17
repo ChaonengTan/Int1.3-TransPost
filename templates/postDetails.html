@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{% block styles %}
+
+{% endblock %}
+{%block content%}
+<div class="postDetails">
+    <h3>{{post.title}}</h3>
+    <img src="{{post.image}}" alt="">
+    <p>{{post.disc}}</p>
+</div>
+<form action="/posts/translate/{{post._id}}" method="POST">
+    <fieldset>
+        <h3>Translate</h3>
+        <label>
+            Source Language
+            <input type="text" name="translateSource" placeholder="e.g. es (optional)">
+        </label>
+        <label>
+            Target Language
+            <input type="text" name="translateTarget" placeholder="e.g. en">
+        </label>
+
+        <input type="submit" class="submit" value="Translate!">
+    </fieldset>
+</form>
+{%endblock%}
