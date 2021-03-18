@@ -4,6 +4,50 @@
 {% endblock %}
 {%block content%}
 <h1>Trans - <u>Posts</u></h1>
+{% if not user %}
+<div class="signin">
+    {% if badPassword %}
+    <h3>Error: Bad Password</h3>
+    {% endif %}
+    {% if userExists %}
+    <h3>User already Exists</h3>
+    {% endif %}
+    <form action="/signin" method="POST">
+        <fieldset>
+            <h3>Sign In</h3>
+            <label>
+                Username
+                <input type="text" name="signinName" placeholder="Someone">
+            </label>
+            <label>
+                Password
+                <input type="password" name="signinPassword" placeholder="password">
+            </label>
+            <input type="submit" class="submit" value="Sign In!">
+        </fieldset>
+    </form>
+    <form action="/register" method="POST">
+        <fieldset>
+            <h3>Register</h3>
+            <label>
+                Username
+                <input type="text" name="registerName" placeholder="Someone">
+            </label>
+            <label>
+                Password
+                <input type="password" name="registerPassword" placeholder="password">
+            </label>
+            <label>
+                Verify Password
+                <input type="password" name="registerPasswordCheck" placeholder="repeat password">
+            </label>
+            <input type="submit" class="submit" value="Create Account!">
+        </fieldset>
+    </form>
+</div>
+{% elif user %}
+<h3>Welcome! {{user.username}}</h3>
+{% endif %}
 <div class="newPost">
     <form action="/newPost" method="POST">
         <fieldset>
@@ -32,7 +76,6 @@
             <h3>{{post.title}}</h3>
             <img src="{{post.image}}" alt="">
             <p>{{post.disc}}</p>
-            <p>{{post._id}}</p>
         </div>
     </a>
 {% endfor %}

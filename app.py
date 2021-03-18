@@ -73,7 +73,45 @@ def postTranslate(postID):
         'post' : translatedPostInfo
     }
     return render_template('postDetails.html', **context)
+@app.route('/register', methods=['POST'])
+def register():
+    """Registers a user"""
+    password = request.form.get('registerPassword')
+    checkPass = request.form.get('registerPasswordCheck')
+    mongoPosts = mongo.db.posts.find()
+    if (password === checkPass):
+        user = {
+            'username': request.form.get('newPostTitle'),
+            'password': password
+        }
+        if mongo.db.users.find_one(user):
+            context = {
+                'mongoPosts' : mongoPosts,
+                'userExists' : True
+            }
+            return render_template('home.html', **context)
+        mongo.db.users.insert_one(user)
+        targetUser = mongo.db.users.find_one({'username': request.form.get('newPostTitle'),'password': request.form.get('registerPassword')})
+        context = {
+            'mongoPosts' : mongoPosts,
+            'user': targetUser
+        }
+        return render_template('home.html', **context)
+    else:
+        context = {
+            'mongoPosts' : mongoPosts,
+            'badPassword' : True
+        }
+        return render_template('home.html', **context)
+@app.route('/signin', methods=['POST'])
+def signIn():
+    """Sign ins a user"""
+    username = request.form.get('signinName')
+    password = request.form.get('signinPassword')
+    context = {
+        'post' : postInfo
+    }
+    return render_template('home.html', **context)
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
     app.run(debug=True)
-    
