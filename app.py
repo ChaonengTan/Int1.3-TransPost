@@ -79,7 +79,7 @@ def register():
     password = request.form.get('registerPassword')
     checkPass = request.form.get('registerPasswordCheck')
     mongoPosts = mongo.db.posts.find()
-    if (password === checkPass):
+    if (password == checkPass):
         user = {
             'username': request.form.get('newPostTitle'),
             'password': password
@@ -91,7 +91,7 @@ def register():
             }
             return render_template('home.html', **context)
         mongo.db.users.insert_one(user)
-        targetUser = mongo.db.users.find_one({'username': request.form.get('newPostTitle'),'password': request.form.get('registerPassword')})
+        targetUser = mongo.db.users.find_one(user)
         context = {
             'mongoPosts' : mongoPosts,
             'user': targetUser
@@ -106,10 +106,20 @@ def register():
 @app.route('/signin', methods=['POST'])
 def signIn():
     """Sign ins a user"""
-    username = request.form.get('signinName')
-    password = request.form.get('signinPassword')
+    user = {
+        'username': request.form.get('signinName'),
+        'password': request.form.get('signinPassword')
+    }
+    targetUser = mongo.db.users.find_one(user)
+    if not targetUser:
+        context = {
+            'mongoPosts' : mongoPosts,
+            'badLogin' : True
+        }
+        return render_template('home.html', **context)
     context = {
-        'post' : postInfo
+        'post' : postInfo,
+        'user' : targetUser
     }
     return render_template('home.html', **context)
 if __name__ == '__main__':

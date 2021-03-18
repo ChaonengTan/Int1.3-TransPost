@@ -12,6 +12,9 @@
     {% if userExists %}
     <h3>User already Exists</h3>
     {% endif %}
+    {% if badLogin %}
+    <h3>Error: Bad Login</h3>
+    {% endif %}
     <form action="/signin" method="POST">
         <fieldset>
             <h3>Sign In</h3>
@@ -48,6 +51,7 @@
 {% elif user %}
 <h3>Welcome! {{user.username}}</h3>
 {% endif %}
+{% if user %}
 <div class="newPost">
     <form action="/newPost" method="POST">
         <fieldset>
@@ -69,6 +73,7 @@
         </fieldset>
     </form>
 </div>
+{% endif %}
 
 {% for post in mongoPosts %}
     <a href="/posts/{{post._id}}">
