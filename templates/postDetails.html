@@ -1,12 +1,22 @@
 {%extends 'base.html'%}
 {% block styles %}
-
+<link rel="stylesheet" href="/static/styles/tooltips.css">
 {% endblock %}
 {%block content%}
 <div class="postDetails">
-    <h3>{{post.title}}</h3>
-    <img src="{{post.image}}" alt="">
-    <p>{{post.disc}}</p>
+    <div class="post">
+        <h3>{{post.title}}</h3>
+        <img src="{{post.image}}" alt="">
+        <p>{{post.disc}}</p>
+    </div>
+    <div class="user">
+        <p>
+            <div class="tooltip">
+                - {{post.author.username}}
+                <span class="tooltiptext">{{post.author._id}}</span>
+            </div>
+        </p>
+    </div>
 </div>
 <form action="/posts/translate/{{post._id}}" method="POST">
     <fieldset>

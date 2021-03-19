@@ -1,13 +1,16 @@
 import os
 import requests
 import json
+import secrets
 
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file, redirect, url_for, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
+secret_key = secrets.token_hex(16)
+app.config['SECRET_KEY'] = secret_key
 load_dotenv()
 app.config["MONGO_URI"] = os.getenv('mongoURI')
 mongo = PyMongo(app)
@@ -23,11 +26,15 @@ def home():
     context = {
         'mongoPosts' : mongoPosts
     }
+    if 'user' in session:
+        user = session['user']
+        context['user'] = user
     return render_template('home.html', **context)
-@app.route('/newPost', methods=['GET', 'POST'])
+@app.route('/newPost', methods=['POST'])
 def newPost():
     """Creates a new post"""
     post = {
+        'author': session['user'],
         'title': request.form.get('newPostTitle'),
         'image': request.form.get('newPostURL'),
         'disc': request.form.get('newPostDisc')
@@ -81,7 +88,7 @@ def register():
     mongoPosts = mongo.db.posts.find()
     if (password == checkPass):
         user = {
-            'username': request.form.get('newPostTitle'),
+            'username': request.form.get('registerName'),
             'password': password
         }
         if mongo.db.users.find_one(user):
@@ -92,11 +99,8 @@ def register():
             return render_template('home.html', **context)
         mongo.db.users.insert_one(user)
         targetUser = mongo.db.users.find_one(user)
-        context = {
-            'mongoPosts' : mongoPosts,
-            'user': targetUser
-        }
-        return render_template('home.html', **context)
+        createSession(targetUser)
+        return redirect(url_for('home'))
     else:
         context = {
             'mongoPosts' : mongoPosts,
@@ -106,6 +110,7 @@ def register():
 @app.route('/signin', methods=['POST'])
 def signIn():
     """Sign ins a user"""
+    mongoPosts = mongo.db.posts.find()
     user = {
         'username': request.form.get('signinName'),
         'password': request.form.get('signinPassword')
@@ -117,11 +122,19 @@ def signIn():
             'badLogin' : True
         }
         return render_template('home.html', **context)
-    context = {
-        'post' : postInfo,
-        'user' : targetUser
+    createSession(targetUser)
+    return redirect(url_for('home'))
+@app.route('/logout')
+def logout():
+    """Sign out the user"""
+    session.pop('user', None)
+    return redirect(url_for('home'))
+def createSession(user):
+    newSessionContext = {
+        '_id': str(user['_id']),
+        'username': user['username']
     }
-    return render_template('home.html', **context)
+    session['user'] = newSessionContext
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
     app.run(debug=True)
