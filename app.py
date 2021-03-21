@@ -52,6 +52,9 @@ def postDetails(postID):
     context = {
         'post' : postInfo
     }
+    if 'user' in session:
+        user = session['user']
+        context['user'] = user
     return render_template('postDetails.html', **context)
 @app.route('/posts/translate/<postID>', methods=['GET', 'POST'])
 def postTranslate(postID):
@@ -135,6 +138,14 @@ def createSession(user):
         'username': user['username']
     }
     session['user'] = newSessionContext
+@app.route('/profile/<userID>')
+def profile(userID):
+    """Profile Page"""
+    userProfile = mongo.db.users.find_one(ObjectId(userID))
+    context = {
+        'profile' : userProfile
+    }
+    return render_template('profile.html', **context)
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
     app.run(debug=True)

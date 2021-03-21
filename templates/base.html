@@ -3,6 +3,9 @@
     <head>
         <title>TransPost</title>
         <link rel="stylesheet" href="/static/styles/base.css">
+        <link rel="stylesheet" href="/static/styles/nav.css">
+        <link rel="stylesheet" href="/static/styles/content.css">
+        <link rel="stylesheet" href="/static/styles/footer.css">
         {% block styles %}
         <!-- Styles goes here -->
         {% endblock %}
@@ -10,11 +13,11 @@
     <body>
 
         {% include 'navbar.html' %}
-
-        {% block content %}
-        <!-- Content goes here -->
-        {% endblock %}
-
+        <div class="content">
+            {% block content %}
+            <!-- Content goes here -->
+            {% endblock %}
+        </div>
         {% include 'footer.html' %}
 
     </body>

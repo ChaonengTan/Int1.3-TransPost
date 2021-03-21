@@ -8,11 +8,11 @@
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: auto;
   background-color: black;
   color: #fff;
   text-align: center;
-  padding: 5px 0;
+  padding: 2px 5px;
   border-radius: 6px;
  
   /* Position the tooltip text - see examples below! */
@@ -26,6 +26,7 @@
 }
 
 /* example */
-/* <div class="tooltip">Hover over me
-  <span class="tooltiptext">Tooltip text</span>
+/* <div class="tooltip">
+    Hover over me
+    <span class="tooltiptext">Tooltip text</span>
 </div> */

@@ -1,10 +1,11 @@
-<nav>
+<div class='navbar'>
     <div class="navLeft">
-        <a href="/">Home</a>
+        <a href="/">TransPost</a>
     </div>
-    {% if user %}
     <div class="navRight">
-        <a href="/logout">Logout</a>
+        {% if user %}
+            <a href="/profile/{{user._id}}">Profile</a>
+            <a href="/logout">Logout</a>
+        {% endif %}
     </div>
-    {% endif %}
-</nav>
+</div>

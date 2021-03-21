@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+{% block styles %}
+<link rel="stylesheet" href="/static/styles/tooltips.css">
+<link rel="stylesheet" href="/static/styles/profile.css">
+{% endblock %}
+{%block content%}
+<div class="tooltip">
+    <h1>{{profile.username}}</h1>
+    <span class="tooltiptext">{{profile._id}}</span>
+</div>
+{% if not profile.image %}
+    <img src="https://via.placeholder.com/200" alt="">
+{% else %}
+    <img src="{{profile.image}}" alt="">
+{% endif %}
+{%endblock%}
