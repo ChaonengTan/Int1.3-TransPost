@@ -1,0 +1,23 @@
+.postDetails {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.postDetails > .post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.postDetails > .user {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 10vw;
+}
+.user > * {
+    text-decoration: none;
+    color: black;
+}
+.translateBox > * {
+    padding: 1em;
+    margin-top: 1em;
+}

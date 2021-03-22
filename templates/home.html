@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 {% block styles %}
-
+<link rel="stylesheet" href="/static/styles/home.css">
 {% endblock %}
 {%block content%}
 {% if not user %}
@@ -48,7 +48,7 @@
     </form>
 </div>
 {% elif user %}
-<h3>Welcome! {{user.username}}</h3>
+<h1>Welcome! {{user.username}}</h1>
 {% endif %}
 {% if user %}
 <div class="newPost">
@@ -64,8 +64,8 @@
                 <input type="text" name="newPostURL" placeholder="https://via.placeholder.com/100">
             </label>
             <label>
-                Discription
-                <input type="text" name="newPostDisc" placeholder="discription...">
+                Discription </br>
+                <textarea name="newPostDisc" cols="40%" rows="7" placeholder="discription..."></textarea>
             </label>
 
             <input type="submit" class="submit" value="Post!">
@@ -75,9 +75,9 @@
 {% endif %}
 
 {% for post in mongoPosts %}
-    <a href="/posts/{{post._id}}">
-        <div class="postCard">
-            <h3>{{post.title}}</h3>
+    <a href="/posts/{{post._id}}" class="postCard">
+        <div>
+            <h2>{{post.title}}</h2>
             <img src="{{post.image}}" alt="">
             <p>{{post.disc}}</p>
         </div>

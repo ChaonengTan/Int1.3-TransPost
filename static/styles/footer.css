@@ -1,5 +1,16 @@
 .footer {
     background-color: black;
-    color: white;
     padding: 1em;
+}
+.footer > * {
+    margin: .3em;
+}
+.footer > * > * {
+    color: white;
+}
+.footHead {
+    font-size: 1.3em;
+}
+.footContent {
+    margin-left: 1em;
 }
