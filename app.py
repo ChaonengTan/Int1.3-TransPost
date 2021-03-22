@@ -18,7 +18,6 @@ API_KEY = os.getenv('API_KEY')
 API_URL = 'https://google-translate1.p.rapidapi.com/language/translate/v2/languages'
 
 # routes
-
 @app.route('/')
 def home():
     """Disc"""
@@ -75,6 +74,7 @@ def postTranslate(postID):
     titleResponse = requests.request("POST", url, data=Payload, headers=headers)
     dataResponse = json.loads(titleResponse.text)
     translatedPostInfo = {
+        'author': postInfo['author'],
         'title': dataResponse['data']['translations'][0]['translatedText'],
         'image': postInfo['image'],
         'disc': dataResponse['data']['translations'][1]['translatedText']
@@ -142,9 +142,19 @@ def createSession(user):
 def profile(userID):
     """Profile Page"""
     userProfile = mongo.db.users.find_one(ObjectId(userID))
-    context = {
-        'profile' : userProfile
+    userProfileID = userProfile['_id']
+    newUserProfile = {
+        '_id': f'{userProfileID}',
+        'username': userProfile['username']
     }
+    userPosts = mongo.db.posts.find({'author': newUserProfile})
+    context = {
+        'profile' : userProfile,
+        'userPosts' : userPosts
+    }
+    if 'user' in session:
+        user = session['user']
+        context['user'] = user
     return render_template('profile.html', **context)
 if __name__ == '__main__':
     app.config['ENV'] = 'development'
