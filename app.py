@@ -43,6 +43,9 @@ def newPost():
     context = {
         'mongoPosts' : mongoPosts
     }
+    if 'user' in session:
+        user = session['user']
+        context['user'] = user
     return render_template('home.html', **context)
 @app.route('/posts/<postID>')
 def postDetails(postID):
