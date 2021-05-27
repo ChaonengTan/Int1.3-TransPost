@@ -159,7 +159,3 @@ def profile(userID):
         user = session['user']
         context['user'] = user
     return render_template('profile.html', **context)
-if __name__ == '__main__':
-    app.config['ENV'] = 'development'
-    app.run(debug=True)
-    # app.run(threaded=True, port=5000)
