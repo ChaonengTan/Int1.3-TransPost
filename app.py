@@ -159,3 +159,11 @@ def profile(userID):
         user = session['user']
         context['user'] = user
     return render_template('profile.html', **context)
+@app.errorhandler(404)
+def error404(userID):
+    """404 Page"""
+    context = {}
+    if 'user' in session:
+        user = session['user']
+        context['user'] = user
+    return render_template('404.html', **context)

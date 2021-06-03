@@ -8,6 +8,14 @@
 }
 .navLeft > * {
     margin-right: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.navLeft img {
+    max-width: auto;
+    height: 1em;
+    margin-right: .3em;
 }
 .navRight > * {
     margin-left: 5px;
