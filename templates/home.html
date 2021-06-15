@@ -1,77 +1,17 @@
 {%extends 'base.html'%}
 {% block styles %}
+<link rel="stylesheet" href="/static/styles/signin.css">
+<link rel="stylesheet" href="/static/styles/newPost.css">
 <link rel="stylesheet" href="/static/styles/home.css">
 {% endblock %}
 {%block content%}
 {% if not user %}
-<div class="signin">
-    {% if badPassword %}
-    <h3>Error: Bad Password</h3>
-    {% endif %}
-    {% if userExists %}
-    <h3>User already Exists</h3>
-    {% endif %}
-    {% if badLogin %}
-    <h3>Error: Bad Login</h3>
-    {% endif %}
-    <form action="/signin" method="POST">
-        <fieldset>
-            <h3>Sign In</h3>
-            <label>
-                Username
-                <input type="text" name="signinName" placeholder="Someone">
-            </label>
-            <label>
-                Password
-                <input type="password" name="signinPassword" placeholder="password">
-            </label>
-            <input type="submit" class="submit" value="Sign In!">
-        </fieldset>
-    </form>
-    <form action="/register" method="POST">
-        <fieldset>
-            <h3>Register</h3>
-            <label>
-                Username
-                <input type="text" name="registerName" placeholder="Someone">
-            </label>
-            <label>
-                Password
-                <input type="password" name="registerPassword" placeholder="password">
-            </label>
-            <label>
-                Verify Password
-                <input type="password" name="registerPasswordCheck" placeholder="repeat password">
-            </label>
-            <input type="submit" class="submit" value="Create Account!">
-        </fieldset>
-    </form>
-</div>
+{% include 'signin.html' %}
 {% elif user %}
 <h1>Welcome! {{user.username}}</h1>
 {% endif %}
 {% if user %}
-<div class="newPost">
-    <form action="/newPost" method="POST">
-        <fieldset>
-            <h3>New Post</h3>
-            <label>
-                Title
-                <input type="text" name="newPostTitle" placeholder="Title">
-            </label>
-            <label>
-                IMG URL
-                <input type="text" name="newPostURL" placeholder="https://via.placeholder.com/100">
-            </label>
-            <label>
-                Discription </br>
-                <textarea name="newPostDisc" cols="40%" rows="7" placeholder="discription..."></textarea>
-            </label>
-
-            <input type="submit" class="submit" value="Post!">
-        </fieldset>
-    </form>
-</div>
+{% include 'newPost.html' %}
 {% endif %}
 
 {% for post in mongoPosts %}

@@ -1,0 +1,43 @@
+<div class="signin">
+    {% if badPassword %}
+    <h3>Error: Bad Password</h3>
+    {% endif %}
+    {% if userExists %}
+    <h3>User already Exists</h3>
+    {% endif %}
+    {% if badLogin %}
+    <h3>Error: Bad Login</h3>
+    {% endif %}
+    <form action="/signin" method="POST">
+        <fieldset>
+            <h3>Sign In</h3>
+            <label>
+                Username
+                <input type="text" name="signinName" placeholder="Someone">
+            </label>
+            <label>
+                Password
+                <input type="password" name="signinPassword" placeholder="password">
+            </label>
+            <button type="submit" class="submit">Sign In!</button>
+        </fieldset>
+    </form>
+    <form action="/register" method="POST">
+        <fieldset>
+            <h3>Register</h3>
+            <label>
+                Username
+                <input type="text" name="registerName" placeholder="Someone">
+            </label>
+            <label>
+                Password
+                <input type="password" name="registerPassword" placeholder="password">
+            </label>
+            <label>
+                Verify Password
+                <input type="password" name="registerPasswordCheck" placeholder="repeat password">
+            </label>
+            <button type="submit" class="submit">Create Account!</button>
+        </fieldset>
+    </form>
+</div>

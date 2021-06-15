@@ -1,17 +1,13 @@
 .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
     background-color: black;
-    padding: 1em;
-}
-.footer > * {
-    margin: .3em 0 .3em 20vw;
-}
-.footer > * > * {
     color: white;
+    height: 13vh;
+}
+.footer a {
     text-decoration: none;
-}
-.footHead {
-    font-size: 1.3em;
-}
-.footContent {
-    padding-left: 1em;
+    color: white;
 }

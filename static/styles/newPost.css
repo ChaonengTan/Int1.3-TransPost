@@ -1,0 +1,19 @@
+/* New Post */
+.newPost > * > * {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    padding: 1em 5em;
+    margin-top: .5em;
+}
+.newPost label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.newPost input, .newPost textarea {
+    margin-left: .2em;
+    width: 100%;
+    padding: .5em;
+    font-size: .8em;
+}

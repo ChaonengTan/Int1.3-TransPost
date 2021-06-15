@@ -1,9 +1,14 @@
 {%extends 'base.html'%}
 {% block styles %}
+<link rel="stylesheet" href="/static/styles/404.css">
 {% endblock %}
 {%block content%}
-<h1>Error 404</h1>
-<p>The page you are looking for dosent exist.</p>
-<p>If you think this is incorrect, please try again.</p>
-<a href="/">Return Home</a>
+<div class="err404">
+    <h1>Error 404</h1>
+    <h2>
+        The page you are looking for dosent exist.<br>
+        If you think this is incorrect, please try again.
+    </h2>
+    <a href="/"><button>Return Home</button></a>
+</div>
 {%endblock%}
