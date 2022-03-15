@@ -1,0 +1,17 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .navLeft {
+        img {
+            height: 7vh;
+            width: auto;
+        }
+        a {
+            display: flex;
+            align-items: center;
+        }
+    }
+    
+}
