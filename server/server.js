@@ -13,15 +13,26 @@ const client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology:
 
 // schema
 const schema = buildSchema(`
+    type User {
+        _id: String!
+        username: String!
+        password: String
+    }
     type Post {
-        id: String!
+        _id: String
         title: String!
         message: String!
         author: String!
     }
     type Query {
-        getAllPosts(): [Post!]!
         translatePost(title: String!, message: String!): Post!
+        findOne(id: String!): Post!
+        findAll(): [Post!]!
+        verifyUser(username: String!, password: String!): User!
+    }
+    type Mutation {
+        createPost(post: Post!): Post!
+        createUser(user: User!): User!
     }
 `)
 
@@ -43,8 +54,7 @@ const root = {
         }
         // execute request
         request(options, (error, response, body) => {
-            if (error) throw new Error(error);
-            console.log(body)
+            if (error) throw new Error(error)
             return body
         })
     },
@@ -64,9 +74,10 @@ const root = {
             const collection = client.db("transpost").collection("post");
             // finds one post by id
             result = collection.findOne({_id: id})
+            if (!result) throw new Error('db findOne error')
         })
         client.close();
-        return result ? result : new Error('db findOne error')
+        return result
     },
     findAll: async () => {
         let result
@@ -75,11 +86,41 @@ const root = {
             const collection = client.db("transpost").collection("post");
             // gets all results
             result = collection.find()
-            
+            if (!result) throw new Error('db findAll error')
         })
         client.close();
-        return result ? result : new Error('db findAll error')
-    }
+        return result
+    },
+    createUser: async (user) => {
+        let result
+        // connect to the db
+        client.connect(err => {
+            const collection = client.db("transpost").collection("user");
+            // checks if username has been used
+            if (collection.findOne({username: user.username})) {
+                throw new Error('user with this username already exists')
+                return
+            }
+            // creates a user
+            collection.insertOne(user)
+            result = collection.findOne(user)
+            if (!result) throw new Error('db createUser error')
+        })
+        client.close();
+        return result
+    },
+    verifyUser: async (username, password) => {
+        let result
+        // connect to the db
+        client.connect(err => {
+            const collection = client.db("transpost").collection("user");
+            // creates a user
+            result = collection.findOne({username: username, password: password})
+            if (!result) throw new Error('db createUser error')
+        })
+        client.close();
+        return result
+    },
 }
 
 // app
