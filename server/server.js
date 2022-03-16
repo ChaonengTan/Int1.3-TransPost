@@ -5,35 +5,34 @@ const { buildSchema } = require('graphql')
 const cors = require('cors')
 const request = require('request')
 const { MongoClient, ServerApiVersion } = require('mongodb');
-
-import { API_KEY, URI } from './env'
+require('dotenv').config()
 
 // init
-const client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const client = new MongoClient(process.env.URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 
 // schema
 const schema = buildSchema(`
-    type User {
-        _id: String!
-        username: String!
-        password: String
-    }
-    type Post {
-        _id: String
-        title: String!
-        message: String!
-        author: String!
-    }
-    type Query {
-        translatePost(title: String!, message: String!): Post!
-        findOne(id: String!): Post!
-        findAll(): [Post!]!
-        verifyUser(username: String!, password: String!): User!
-    }
-    type Mutation {
-        createPost(post: Post!): Post!
-        createUser(user: User!): User!
-    }
+type User {
+    _id: String!
+    username: String!
+    password: String
+}
+type Post {
+    _id: String
+    title: String!
+    message: String!
+    author: String!
+}
+type Query {
+    translatePost(title: String!, message: String!): Post!
+    findOne(id: String!): Post!
+    findAll: [Post!]!
+    verifyUser(username: String!, password: String!): User!
+}
+type Mutation {
+    createPost(post: Post!): Boolean!
+    createUser(user: User!): User!
+}
 `)
 
 // resolvers
@@ -46,7 +45,7 @@ const root = {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
                 'accept-encoding': 'application/gzip',
-                'x-rapidapi-key': API_KEY,
+                'x-rapidapi-key': process.env.API_KEY,
                 'x-rapidapi-host': 'google-translate1.p.rapidapi.com',
                 useQueryString: true
             },
@@ -66,6 +65,7 @@ const root = {
             collection.insertOne(post)
         })
         client.close();
+        return true
     },
     findOne: async (id) => {
         let result
@@ -119,7 +119,7 @@ const root = {
         })
         client.close();
         return result
-    },
+    }
 }
 
 // app
