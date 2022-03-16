@@ -99,7 +99,6 @@ const root = {
             // checks if username has been used
             if (collection.findOne({username: user.username})) {
                 throw new Error('user with this username already exists')
-                return
             }
             // creates a user
             collection.insertOne(user)
