@@ -15,8 +15,8 @@ const client = new MongoClient(process.env.URI, { useNewUrlParser: true, useUnif
 const schema = buildSchema(`
 scalar JSON
 type User {
-    _id: String!
-    username: String!
+    _id: String
+    username: String
     password: String
 }
 type Post {
@@ -29,7 +29,7 @@ type Query {
     translatePost(title: String!, message: String!): Post!
     findOne(id: String!): Post!
     findAll: [Post!]
-    verifyUser(username: String!, password: String!): User!
+    verifyUser(username: String!, password: String!): User
 }
 type Mutation {
     createPost(post: JSON!): Boolean
@@ -106,15 +106,11 @@ const root = {
         return user
     },
     verifyUser: async ({username, password}) => {
-        client.connect()
-        client.connect(err => {
-            const collection = client.db("transpost").collection("user");
-            // creates a user
-            result = collection.findOne({username: username, password: password})
-            if (!result) throw new Error('db createUser error')
-        })
-        client.close();
-        return result
+        await client.connect()
+        const collection = client.db("transpost").collection("user");
+        const res = await collection.findOne({username, password})
+        client.close()
+        return res ? res : false
     }
 }
 

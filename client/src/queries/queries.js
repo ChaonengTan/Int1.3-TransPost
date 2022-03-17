@@ -76,6 +76,13 @@ query verifyUser($username: String!, $password: String!) {
         username
     }
 }`
+// query {
+//     verifyUser(username: "userTest", password: "password123") {
+//       _id
+//       username
+//       password
+//     }
+//   }
 
 export default {
     createPost,
