@@ -1,23 +1,15 @@
-import { Link } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
+// components
+import CreatePost from './createPost'
+import PostList from './postList'
+import findAll from '../queries/findAll'
 
-export default function Home(props) {
-    const { data } = props
-    const posts = data.map(post => {
-        return(
-            <div>
-                this is a post
-                <Link to={`/post/${post._id}`}>
-                    {post.title}
-                </Link>
-                <p>{post.message}</p>
-                <p>{post.author}</p>
-            </div>
-        )
-    })
+export default function Home() {
+    const { loading, data } = useQuery(findAll)
     return(
         <div>
-            this is the home page
-            {posts}
+            <CreatePost/>
+            { data ? <PostList data={data.reverse()}/> : "Loading" }
         </div>
     )
 }
