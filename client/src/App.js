@@ -1,6 +1,5 @@
 import './App.css';
 import { HashRouter as Router, Route } from 'react-router-dom'
-import CreatePost from './components/createPost'
 
 import Navbar from './components/navbar'
 import Home from './components/home'
