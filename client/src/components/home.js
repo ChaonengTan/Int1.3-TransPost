@@ -5,11 +5,13 @@ import PostList from './postList'
 import findAll from '../queries/findAll'
 
 export default function Home() {
-    const { loading, data } = useQuery(findAll)
+    const { data } = useQuery(findAll, {
+        pollInterval: 3000
+    })
     return(
         <div>
             <CreatePost/>
-            { data ? <PostList data={data.reverse()}/> : "Loading" }
+            { data ? <PostList data={data}/> : "Loading" }
         </div>
     )
 }
