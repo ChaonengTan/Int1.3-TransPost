@@ -89,27 +89,24 @@ const root = {
         const data = res.map(obj => {
             return {_id: obj._id.toString(), title: obj.post.title, message: obj.post.message, author: obj.post.author}
         })
-        console.log(data)
         return data
     },
-    createUser: async (username, password) => {
+    createUser: async ({username, password}) => {
         // connect to the db
         await client.connect()
         const collection = client.db("transpost").collection("user")
         const user = {username, password}
-        // checks if user exists
-        if (await collection.findOne(user)) {
-            return null
-        }
-        // creates a user
-        await collection.insertOne(user)
-        const data = await collection.findOne(user)
+        // checks if user exist
+        const alreadyExist = await collection.findOne({username: user.username})
+        if (alreadyExist) return null
+        // inserts the user
+        const insertRes = await collection.insertOne(user)
         client.close()
-        return data
+        user._id = insertRes.insertedId.toString()
+        return user
     },
-    verifyUser: async (username, password) => {
-        let result
-        // connect to the db
+    verifyUser: async ({username, password}) => {
+        client.connect()
         client.connect(err => {
             const collection = client.db("transpost").collection("user");
             // creates a user

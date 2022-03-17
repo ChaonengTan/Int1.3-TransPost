@@ -15,6 +15,13 @@ mutation createUser($username: String!, $password: String!) {
         username
     }
 }`
+// mutation {
+//     createUser(username: "userTest", password: "differentPassword3"){
+//       _id
+//       username
+//       password
+//     }
+//   }
 
 const translatePost = gql`
 query translatePost($title: String!!, $message: String!) {
