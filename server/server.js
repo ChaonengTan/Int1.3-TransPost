@@ -2,9 +2,10 @@
 const express = require('express')
 const { graphqlHTTP } = require('express-graphql')
 const { buildSchema } = require('graphql')
+const { GraphQLJSON, GraphQLJSONObject } = require('graphql-type-json');
 const cors = require('cors')
 const request = require('request')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 
 // init
@@ -12,26 +13,27 @@ const client = new MongoClient(process.env.URI, { useNewUrlParser: true, useUnif
 
 // schema
 const schema = buildSchema(`
+scalar JSON
 type User {
     _id: String!
     username: String!
     password: String
 }
 type Post {
-    _id: String
-    title: String!
-    message: String!
-    author: String!
+    _id: String!
+    title: String
+    message: String
+    author: String
 }
 type Query {
     translatePost(title: String!, message: String!): Post!
     findOne(id: String!): Post!
-    findAll: [Post!]!
+    findAll: [Post!]
     verifyUser(username: String!, password: String!): User!
 }
 type Mutation {
-    createPost(post: Post!): Boolean!
-    createUser(user: User!): User!
+    createPost(post: JSON!): Boolean
+    createUser(username: String!, password: String!): User
 }
 `)
 
@@ -49,7 +51,7 @@ const root = {
                 'x-rapidapi-host': 'google-translate1.p.rapidapi.com',
                 useQueryString: true
             },
-            form: {q: title, q: message}
+            form: {q: title}
         }
         // execute request
         request(options, (error, response, body) => {
@@ -59,54 +61,51 @@ const root = {
     },
     createPost: async (post) => {
         // connect to the db
-        client.connect(err => {
-            const collection = client.db("transpost").collection("post");
-            // inserts a post to collection
-            collection.insertOne(post)
-        })
-        client.close();
-        return true
+        await client.connect()
+        const collection = client.db("transpost").collection("post");
+        // inserts a post to collection
+        const insert = await collection.insertOne(post)
+        client.close()
+        return insert ? true : false
     },
-    findOne: async (id) => {
-        let result
+    findOne: async ({id}) => {
         // connect to the db
-        client.connect(err => {
-            const collection = client.db("transpost").collection("post");
-            // finds one post by id
-            result = collection.findOne({_id: id})
-            if (!result) throw new Error('db findOne error')
-        })
-        client.close();
-        return result
+        await client.connect()
+        const collection = client.db("transpost").collection("post")
+        // finds one post by id
+        const oid = new ObjectId(id)
+        const data = await collection.findOne({_id: oid})
+        client.close()
+        const res = {_id: data._id.toString(), title: data.post.title, message: data.post.message, author: data.post.author}
+        return res
     },
     findAll: async () => {
-        let result
         // connect to the db
-        client.connect(err => {
-            const collection = client.db("transpost").collection("post");
-            // gets all results
-            result = collection.find()
-            if (!result) throw new Error('db findAll error')
+        await client.connect()
+        const collection = client.db("transpost").collection("post")
+        // gets all data
+        const res = await collection.find({}).toArray()
+        client.close()
+        const data = res.map(obj => {
+            return {_id: obj._id.toString(), title: obj.post.title, message: obj.post.message, author: obj.post.author}
         })
-        client.close();
-        return result
+        console.log(data)
+        return data
     },
-    createUser: async (user) => {
-        let result
+    createUser: async (username, password) => {
         // connect to the db
-        client.connect(err => {
-            const collection = client.db("transpost").collection("user");
-            // checks if username has been used
-            if (collection.findOne({username: user.username})) {
-                throw new Error('user with this username already exists')
-            }
-            // creates a user
-            collection.insertOne(user)
-            result = collection.findOne(user)
-            if (!result) throw new Error('db createUser error')
-        })
-        client.close();
-        return result
+        await client.connect()
+        const collection = client.db("transpost").collection("user")
+        const user = {username, password}
+        // checks if user exists
+        if (await collection.findOne(user)) {
+            return null
+        }
+        // creates a user
+        await collection.insertOne(user)
+        const data = await collection.findOne(user)
+        client.close()
+        return data
     },
     verifyUser: async (username, password) => {
         let result
