@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 
 export default function PostList(props) {
     const { data } = props
-    return data.map(post => {
+    console.log(data)
+    return data.findAll.map(post => {
         return(
             <div>
                 <Link to={`/post/${post._id}`}>
