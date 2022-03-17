@@ -4,7 +4,7 @@ const { graphqlHTTP } = require('express-graphql')
 const { buildSchema } = require('graphql')
 const { GraphQLJSON, GraphQLJSONObject } = require('graphql-type-json');
 const cors = require('cors')
-const request = require('request')
+const request = require('request-promise');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 
@@ -25,8 +25,12 @@ type Post {
     message: String
     author: String
 }
+type Translate {
+    title: String
+    message: String
+}
 type Query {
-    translatePost(title: String!, message: String!, target: String!): JSON
+    translatePost(title: String!, message: String!, target: String!): Translate
     findOne(id: String!): Post!
     findAll: [Post!]
     verifyUser(username: String!, password: String!): User
@@ -40,25 +44,35 @@ type Mutation {
 // resolvers
 const root = {
     translatePost: async ({title, message, target}) => {
+        let values = {title, message}
         // perameters
-        const options = {
-            method: 'POST',
-            url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded',
-              'accept-encoding': 'application/gzip',
-              'x-rapidapi-key': process.env.API_KEY,
-              'x-rapidapi-host': 'google-translate1.p.rapidapi.com',
-              useQueryString: true
-            },
-            form: {q: title, target}
+        const options = (string) => {
+            return {
+                method: 'POST',
+                url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
+                headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'accept-encoding': 'application/gzip',
+                'x-rapidapi-key': process.env.API_KEY,
+                'x-rapidapi-host': 'google-translate1.p.rapidapi.com',
+                useQueryString: true
+                },
+                form: {q: string, target}
+            }
           }
         // execute request
-        return request(options, (error, response, body) => {
-            if (error) throw new Error(error)
-            console.log(body)
-            return body
+        const titlePromise = request(options(title)).then((body) => {
+            // console.log(JSON.parse(body).data.translations[0].translatedText)
+            values.title = JSON.parse(body).data.translations[0].translatedText
         })
+        const messagePromise = request(options(message)).then((body) => {
+            // console.log(JSON.parse(body).data.translations[0].translatedText)
+            values.message = JSON.parse(body).data.translations[0].translatedText
+        })
+        return await Promise.all([titlePromise, messagePromise]).then(() => {
+            return values
+        })
+
     },
     createPost: async (post) => {
         // connect to the db
