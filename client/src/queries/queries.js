@@ -1,13 +1,16 @@
 import { gql } from '@apollo/client'
 
 const createPost = gql`
-mutation createPost($post: Post!) {
+mutation createPost($post: JSON!) {
     createPost(post: $post)
 }`
+// mutation {
+//     createPost(post: {title: "testPost", message:"testing createPost mutation", author: "graphql"})
+// }
 
 const createUser = gql`
-mutation createUser($user: User!) {
-    createUser(user: $user) {
+mutation createUser($username: String!, $password: String!) {
+    createUser(username: $username, password: $password) {
         _id
         username
     }
@@ -30,6 +33,15 @@ query findOne($id: String!) {
         author
     }
 }`
+// query {
+//     findOne(id: "62319085d22ed3e8476b3aaa") {
+//       _id
+//       title
+//       message
+//       author
+//     }
+//   }
+
 
 const findAll = gql`
 query findAll {
@@ -40,6 +52,15 @@ query findAll {
         author
     }
 }`
+// query {
+//     findAll {
+//       _id
+//       title
+//       message
+//       author
+//     }
+//   }
+
 
 const verifyUser = gql`
 query verifyUser($username: String!, $password: String!) {
