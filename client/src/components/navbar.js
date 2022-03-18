@@ -4,7 +4,7 @@ export default function Navbar() {
     const username = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')).username : false
     const loggedIn = () => {
         return(
-            <div>
+            <div className='loggedIn'>
                 <p>{username}</p>
                 <button onClick={() => {
                     sessionStorage.removeItem('user')

@@ -28,4 +28,32 @@
       -ms-flex-align: center;
           align-items: center;
 }
+
+.navbar .navRight .loggedIn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.navbar .navRight .loggedIn > * {
+  margin: 0 .5rem;
+}
+
+.navbar .navRight .loggedIn button {
+  color: black;
+  background-color: white;
+  border: black 1px solid;
+  border-radius: 1vh;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+}
+
+.navbar .navRight .loggedIn button:hover {
+  color: white;
+  background-color: black;
+}
 /*# sourceMappingURL=navbar.css.map */

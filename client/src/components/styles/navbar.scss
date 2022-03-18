@@ -14,5 +14,24 @@
             align-items: center;
         }
     }
-    
+    .navRight {
+        .loggedIn {
+            display: flex;
+            flex-direction: row;
+            &>* {
+                margin: 0 .5rem;
+            }
+            button {
+                color: black;
+                background-color: white;
+                border: black 1px solid;
+                border-radius: 1vh;
+                transition: 200ms;
+                &:hover {
+                    color: white;
+                    background-color: black;
+                }
+            }
+        }
+    }
 }
