@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client'
-require('dotenv').config()
+const dotenv = require('dotenv')
+dotenv.config({ path: '../' })
 const port = process.env.PORT || 8000
 
 export const client = new ApolloClient({
