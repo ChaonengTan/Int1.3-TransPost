@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,SAAS,CAAC;EACN,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,MAAM,EAAE,MAAM;CAKjB;;AARD,AAII,SAJK,GAIH,GAAG,CAAC;EACF,OAAO,EAAE,KAAK;EACd,aAAa,EAAE,mBAAmB;CACrC",
+    "sources": [
+        "postList.scss"
+    ],
+    "names": [],
+    "file": "postList.css"
+}

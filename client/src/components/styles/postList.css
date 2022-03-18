@@ -1,0 +1,16 @@
+.postList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0 25vw;
+}
+
+.postList > div {
+  padding: 4vh 0;
+  border-bottom: lightgray 2px solid;
+}
+/*# sourceMappingURL=postList.css.map */

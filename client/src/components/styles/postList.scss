@@ -1,0 +1,9 @@
+.postList {
+    display: flex;
+    flex-direction: column;
+    margin: 0 25vw;
+    &>div {
+        padding: 4vh 0;
+        border-bottom: lightgray 2px solid;
+    }
+}
