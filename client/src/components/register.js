@@ -12,7 +12,7 @@ export default function Register() {
     useEffect(() => {
         if (data !== dataRef.current) {
             sessionStorage.setItem('user', JSON.stringify(data.createUser))
-            console.log(JSON.parse(sessionStorage.getItem('user')))
+            window.location.reload(false)
         }
     }, [data, dataRef])
     return(
