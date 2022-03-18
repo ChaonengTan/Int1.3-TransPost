@@ -13,7 +13,7 @@ export default function CreatePost() {
     return(
         <form className='createPost' onSubmit={e => {
             e.preventDefault()
-            uploadPost()
+            if (title!=='' && message!=='') uploadPost()
         }}>
             <div>
                 <label>
