@@ -9,7 +9,6 @@ import Register from './register'
 import './styles/home.css'
 export default function Home() {
     const user = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user'))._id : false
-    console.log(sessionStorage.getItem('user'))
     const { data } = useQuery(findAll, {
         pollInterval: 3000
     })
