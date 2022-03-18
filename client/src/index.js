@@ -9,7 +9,8 @@ dotenv.config({ path: '../' })
 const port = process.env.PORT || 8000
 
 export const client = new ApolloClient({
-  uri: `http://localhost:${port}/graphql`,
+  // uri: `http://localhost:${port}/graphql`,
+  uri: 'https://transpostmern.herokuapp.com/graphql',
   cache: new InMemoryCache()
 });
 
