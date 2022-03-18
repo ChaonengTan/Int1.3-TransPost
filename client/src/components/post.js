@@ -47,7 +47,7 @@ export default function Post(props) {
     return(
         <div>
             {data ? generateDisplay(data.findOne.title, data.findOne.message, data.findOne.author) : 'Loading'}
-            {data ? translator() : 'translator'}
+            {/* {data && translator() } */}
         </div>
     )
 }
