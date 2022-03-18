@@ -4,9 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client'
+require('dotenv').config()
+const port = process.env.PORT || 8000
 
 export const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: `http://localhost:${port}/graphql`,
   cache: new InMemoryCache()
 });
 
