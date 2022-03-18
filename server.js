@@ -141,7 +141,7 @@ app.use('/graphql', graphqlHTTP({
 }))
 
 // start
-const port = 4000
+const port = process.env.PORT || 4000
 app.listen(port, () => {
     console.log('Running on port:'+port)
     console.log(`http://localhost:${port}/graphql`)
