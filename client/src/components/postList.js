@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
+import './styles/postList.css'
 
 export default function PostList(props) {
     const { data } = props
-    console.log(data)
-    return data.findAll.map(post => {
+    const reverseData = [...data.findAll].reverse()
+    const postList = reverseData.map(post => {
         return(
-            <div>
+            <div key={post._id}>
                 <Link to={`/post/${post._id}`}>
                     {post.title}
                 </Link>
@@ -14,4 +15,9 @@ export default function PostList(props) {
             </div>
         )
     })
+    return (
+        <div className='postList'>
+            {postList}
+        </div>
+    )
 }

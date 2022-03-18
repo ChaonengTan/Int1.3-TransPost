@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <Navbar/>
         <Route exact path="/" component={Home}/>
-        <Route path="post/:id" component={Post}/>
+        <Route path="/post/:id" component={Post}/>
         <div>footer goes here</div>
       </div>
     </Router>
