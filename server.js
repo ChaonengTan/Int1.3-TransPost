@@ -6,6 +6,7 @@ const { GraphQLJSON, GraphQLJSONObject } = require('graphql-type-json');
 const cors = require('cors')
 const request = require('request-promise');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const path = require('path')
 require('dotenv').config()
 
 // init
@@ -131,8 +132,9 @@ const root = {
 
 // app
 const app = express()
-
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(cors())
+
 // route
 app.use('/graphql', graphqlHTTP({
     schema,
@@ -141,7 +143,10 @@ app.use('/graphql', graphqlHTTP({
 }))
 
 // start
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 8000
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+})
 app.listen(port, () => {
     console.log('Running on port:'+port)
     console.log(`http://localhost:${port}/graphql`)
