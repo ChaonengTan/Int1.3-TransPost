@@ -1,0 +1,42 @@
+.loginRegister {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.loginRegister form {
+  margin: 0 2rem;
+}
+
+.loginRegister form input {
+  width: 13vw;
+  height: 2rem;
+  border: 1px black solid;
+  border-radius: 1vh;
+  padding: 0 1vw;
+}
+
+.loginRegister form button {
+  margin-top: 2vh;
+  height: 5vh;
+  background-color: white;
+  color: black;
+  border: 1px black solid;
+  border-radius: 1vh;
+  width: 15vw;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+}
+
+.loginRegister form button:hover {
+  color: white;
+  background-color: black;
+}
+/*# sourceMappingURL=home.css.map */
