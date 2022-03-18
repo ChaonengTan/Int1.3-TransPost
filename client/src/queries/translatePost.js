@@ -7,3 +7,9 @@ query translatePost($title: String!, $message: String!) {
         message
     }
 }`
+// query {
+//     translatePost(title: "this is title", message: "message", target: "ja") {
+//       title
+//       message
+//     }
+//   }
