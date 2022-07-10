@@ -1,22 +1,26 @@
 // import React from "react"
-import { useState } from "react"
-import { useLazyQuery, useQuery } from '@apollo/client'
-import translatePost from '../queries/translatePost'
+import { useEffect, useRef, useState } from "react"
+import { useQuery, useLazyQuery } from '@apollo/client'
+import translatePost from "../queries/translatePost"
 import findOne from '../queries/findOne'
 // components
 import DisplayPost from "./minor/displayPost"
 
 export default function Post(props) {
     const { id } = props.match.params
+    const [targetLanguage, setTargetLanguage] = useState('')
+    const [postContent, setPostContent] = useState('loading')
+
+    // queries
     const { data } = useQuery(findOne, {
         variables: { id }
     })
-    const [targetLanguage, setTargetLanguage] = useState('')
-    const [postContent, setPostContent] = useState()
-    // query
-    // const [translate, { data: translateData }] = useLazyQuery(translatePost, {
-    //     variables: { title: data.findOne.title, message: data.findOne.message, target: targetLanguage }
-    // })
+    const [translate, { data: translateData }] = useLazyQuery(translatePost, {
+        skip: !data,
+        variables: { title: data && data.findOne.title, message: data && data.findOne.message, target: targetLanguage }
+    })
+
+    // helper functions
     const generateDisplay = (title, message, author) => {
         return(
             <DisplayPost
@@ -27,11 +31,11 @@ export default function Post(props) {
         )
     }
 
-    const translator = () => {
+    const translator = (title, message) => {
         return(
             <form onSubmit={(e) => {
                 e.preventDefault()
-                // translate()
+                translate()
             }}>
                 <label>
                     <p>Target Language:</p>
@@ -44,10 +48,28 @@ export default function Post(props) {
         )
     }
 
+    // useEffect
+    const initialRef = useRef(true)
+    useEffect(() => {
+        if(initialRef.current){
+            initialRef.current = false
+        } else {
+            setPostContent(generateDisplay(data.findOne.title, data.findOne.message, data.findOne.author))
+        }
+    }, [data])
+    const translateRef = useRef(true)
+    useEffect(() => {
+        if(translateRef.current){
+            translateRef.current = false
+        } else {
+            setPostContent(generateDisplay(translateData.translatePost.title, translateData.translatePost.message, data.findOne.author))
+        }
+    }, [translateData])
+
     return(
         <div>
-            {data ? generateDisplay(data.findOne.title, data.findOne.message, data.findOne.author) : 'Loading'}
-            {/* {data && translator() } */}
+            {postContent}
+            {data ? translator(data.findOne.title, data.findOne.message) : ''}
         </div>
     )
 }
